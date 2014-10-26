@@ -1,0 +1,12 @@
+salaries = load 'Salaries.csv' using PigStorage(',');
+
+data = FOREACH batting GENERATE $0 as year, $4 as player_ID, $5 as salary;
+
+grp_year = GROUP data by (year);
+
+max_sal = FOREACH grp_year GENERATE GROUP AS grp, MAX(data.salary) as max_sal;
+
+join_max_sal = JOIN max_sal by ($4, max_sal), data BY (year, data);
+
+join_data = FOREACH join_max_sal GENERATE $0 AS year, $4 as player_ID, $5 as salary;
+dump join_data;
