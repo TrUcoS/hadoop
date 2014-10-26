@@ -1,6 +1,6 @@
-salaries = load 'Salaries.csv' using PigStorage(',');
+salaries = load '/user/bigdata/pg/batting/Salaries.csv' using PigStorage(',');
 
-data = FOREACH batting GENERATE $0 as year, $4 as player_ID, $5 as salary;
+data = FOREACH salaries GENERATE $0 as year, $3 as playerID, $4 as salary;
 
 grp_year = GROUP data by (year);
 
